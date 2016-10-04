@@ -1,393 +1,243 @@
 
-
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Gautam Iyer">
-    <title>
-      Using git and Dropbox
-    </title>
-      <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-      <link rel="stylesheet"
-	href="/~gautam/sj/share/css/pygments-theme.css">
-      <link rel="stylesheet" href="/~gautam/sj/share/css/local.css">
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js">
-      </script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js">
-      </script>
-    <![endif]-->
-  </head>
-  <body style='position: relative' data-spy='scroll' data-target='#col-right'>
-  <nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	  <span class="sr-only">Toggle navigation</span>
-	  <span class="icon-bar"></span>
-	  <span class="icon-bar"></span>
-	  <span class="icon-bar"></span>
-	</button>
-	<a class="navbar-brand" href="http://www.math.cmu.edu/~gautam/sj">Gautam Iyer</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-	<ul class="nav navbar-nav">
-	  
-	    <li >
-	      <a href="http://www.math.cmu.edu/~gautam/sj/index.html">Research</a>
-	    </li>
-	  
-	    <li >
-	      <a href="http://www.math.cmu.edu/~gautam/sj/teaching">Teaching</a>
-	    </li>
-	  
-	    <li >
-	      <a href="http://www.math.cmu.edu/~gautam/sj/contact.html">CV/Contact</a>
-	    </li>
-	  
-	</ul>
-	<ul class="nav navbar-nav navbar-right">
-	  
-	    <li class='disabled'>
-	      <a href="#">Code</a>
-	    </li>
-	  
-	    <li class='active'>
-	      <a href="http://www.math.cmu.edu/~gautam/sj/blog">Blog</a>
-	    </li>
-	  
-	</ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
+<html>
 
-    <div class='container'>
-      
-  <div class='row'>
-    <div class='col-md-9' id='col-main'>
-      
-	
-      
-      
-  <div class='justify'>
-    
-      
-	<h1>
-	  Using git and Dropbox
-	  
-	    <br />
-	    <small>2016-04-06</small>
-	  
-	</h1>
-      
-    
+<head>
 
-    
-      <p><a href="https://www.dropbox.com/">Dropbox</a> isn&rsquo;t version control.
-If you use <a href="https://git-scm.com/">git</a> to version control your files, and
-have co-authors that use <code>Dropbox</code> then here is a way to use the two
-systems together.</p>
-<h2 id="make-your-shared-dropbox-folder-have-a-separate-repository">Make your shared Dropbox folder have a separate repository</h2>
-<p>I&rsquo;d like my shared <a href="https://www.dropbox.com/">Dropbox</a> folder to be a full fledged git repository, and
-version control all relevant files there via <a href="https://git-scm.com/">git</a>. However, git repositories
-usually contain a special <code>.git/</code> folder in the root. Storing this special
-<code>.git/</code> folder in a <strong>shared dropbox folder</strong> is a recipe for disaster. A
-non-git aware collaborator will certainly wreak havoc on it. Further, doing
-most git operations (even if they are simply checking the status) will push
-notifications to all your collaborator saying that a few git files have
-changed.</p>
-<p>This can be annoying (and disastrous). A better alternative is to set up your
-shared Dropbox folder to be a git repository, but store the git repository (the
-<code>.git/</code> folder) in a separate (non-dropbox) directory.</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ dropbox exclude add .git
-$ mkdir -p <span class="nv">$HOME</span>/.separate-gitroots/shared.git
-$ git init --separate-git-dir<span class="o">=</span><span class="nv">$HOME</span>/.separate-gitroots/shared.git
-</pre></div>
+<meta charset="utf-8" />
+<title>Transport Equation</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
 
 
-<p>This creates the git repository in <code>$HOME/foo/.dropbox.git</code> instead of in
-<code>./.git/</code> as is customary. Now <code>./.git</code> will be a plain text file (not folder)
-that contains the location of the true git repository.</p>
-<p>Obviously <code>./.git</code> will be truly useless to anyone else sharing your Dropbox
-folders,  so I recommend excluding it from the list of synchronized files. The
-<code>dropbox exclude</code> command above does this using Dropbox&rsquo;s
-<a href="https://www.dropbox.com/en/help/4456">Selective sync</a> feature.</p>
-<h2 id="working-on-a-local-copy">Working on a local copy.</h2>
-<p>I set up a local copy, away from Dropbox, to work on. This way a collaborator
-who makes changes while I&rsquo;m working will not overwrite mine, and I can tell
-the two changes apart easily. I also use a centralized remote (so I can share
-it with git-aware co-authors), but you can do without it (if you know what
-you&rsquo;re doing.)</p>
-<h3 id="setting-up-the-repositories">Setting up the repositories</h3>
-<p>To set up a local copy do:</p>
-<div class="codehilite"><pre><span></span>$ git clone git@yourserver.com:foo ~/foo
-</pre></div>
 
 
-<p>assuming <code>git@yourserver.com:foo</code> is the URL of your project. Alternately, if
-you already have some work in <code>~/foo</code>, you can</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/foo
-$ git init
-$ git remote add origin git@yourserver.com:foo
-</pre></div>
+<link rel="alternate" type="application/x-wiki" title="Edit this page" href="https://wiki.math.cmu.edu/iki/2014-372/ikiwiki.cgi?page=model-pdes%2F10-transport&amp;do=edit" />
 
 
-<p>Next add this remote into Dropbox:</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git remote add origin git@yourserver.com:foo
-</pre></div>
+
+<link rel="license" href="#page_license" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 
-<h3 id="committing-changes">Committing changes</h3>
-<p>When a collaborator make changes in Dropbox, you have to commit and push it
-for them, and pull it into your local copy.</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git commit --author <span class="s1">&#39;Coauthor &lt;who@doesnt.use.git&gt;&#39;</span> <span class="o">&amp;&amp;</span> git push
-$ <span class="nb">cd</span> ~/foo
-$ git pull
-</pre></div>
+<link rel="up" href="../model-pdes.html" title="A Few Model PDE's" />
+
+<link rel="next" href="./20-heat.html" title="Heat Equation" />
 
 
-<p>After the first commit as your co-author, you can just use <code>--author Coauthor</code>
-without typing the whole email address every time. Also, if you have only one
-co-author who will commit in Dropbox, then you can use <code>git config</code> to set
-<code>user.name</code> and <code>user.email</code> in the Dropbox repository, and not use <code>--author</code>
-above.</p>
-<p>When you make changes:</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/foo
-$ git commit <span class="o">&amp;&amp;</span> git push
-$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git pull
-</pre></div>
 
 
-<h3 id="when-you-and-your-co-author-simultaneously-made-changes">When you and your co-author simultaneously made changes</h3>
-<p>No problem. Git handles it painlessly.</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git commit --author <span class="s1">&#39;Coauthor &lt;who@doesnt.use.git&gt;&#39;</span> <span class="o">&amp;&amp;</span> git push
-$ <span class="nb">cd</span> ~/foo
-$ git commit -a
-$ git pull --rebase
-</pre></div>
+</head>
+<body>
+<script src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML' type='text/javascript'></script>
+<script src='../javascript/mathjax-config.js' type='text/javascript'></script>
 
 
-<p>The last command may warn you about conflicts (if you and your co-author
-edited similar portions of the same file). Follow the instructions displayed
-by git. Once you&rsquo;re done, push your changes and pull them into Dropbox as
-shown in the previous section.</p>
-<h2 id="creating-branches-for-a-co-author">Creating branches for a co-author</h2>
-<p>Often when when I&rsquo;m editing my local copy my collaborator makes changes in
-Dropbox simultaneously. For simple changes you can merge them quickly as
-above. If there have been more elaborate changes, I usually create a branch
-and merge it as follows.</p>
-<ol>
-<li>
-<p>Commit and push your collaborators changes to a new branch</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git checkout -b coauthor-b1
-$ git commit --author Coauthor -a
-$ git push --all
-</pre></div>
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../index.html">Undergrad PDE Lecture Notes (2014)</a>/ 
+
+<a href="../model-pdes.html">model-pdes</a>/ 
+
+</span>
+<span class="title">
+Transport Equation
+
+</span>
+</span>
 
 
-</li>
-<li>
-<p>Merge your co-authors changes in your local copy. (Or rebase it, if you
-   know what you are doing.)</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/foo
-$ git commit -a
-$ git fetch origin coauthor-b1
-$ git merge coauthor-b1
-$ git push
-</pre></div>
+
+</header>
 
 
-</li>
-<li>
-<p>Pull them in the shared Dropbox folder.</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> ~/Dropbox/shared/foo
-$ git checkout master
-$ git pull
-</pre></div>
-
-
-</li>
-</ol>
-    
-
-    
-  
-    <br />
-    <h3>
-      <span class='glyphicon glyphicon-comment' aria-hidden='true'></span>&emsp;Comments
-    </h3>
-
-    
-    
-
-    <h4>
-      <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>&emsp;Leave a comment
-      <small class='text-warning'>
-	(Spammers beware: All comments are moderated)
-      </small>
-    </h4>
-    <div id='comment-failed' class='alert alert-danger hidden'>
-      Sorry. There was an error submitting your comment. Please try again, or contact me if the problem persists.
-    </div>
-    <div id='comment-form' class='well row small'>
-      <form role='form' method='post'
-	  action='javascript:submit_comment()'>
-	<input type='hidden' name='page' value='20160406-dropbox-git.md'>
-	<input type='hidden' name='comment-number' value='1'>
-	<div class="col-md-6 form-group">
-	  <label class="sr-only" for="name">Name</label>
-	  <input type="text" class="form-control" name="name" placeholder="Name (optional)">
-	</div>
-	<div class="col-md-6 form-group">
-	  <label class="sr-only" for="email">Email address</label>
-	  <input type="email" class="form-control" name="email"
-	    placeholder="Email (optional, to generate an avatar; will not be published)"
-	    title="Your email is only used to generate an avatar. It will not be published or used to contact you. Promise!">
-	</div>
-	<div class='col-md-12 form-group'>
-	  <label class="sr-only" for="subject">Subject</label>
-	  <input type="text" class="form-control" name="subject"
-	    placeholder="Subject (REQUIRED)" REQUIRED>
-	</div>
-	<div class="col-md-12 form-group">
-	  <label class="sr-only" for="email">Comment</label>
-	  <textarea class="form-control" name="comment"
-	    placeholder="Comment. (REQUIRED. Write your comment in Markdown)"
-	    rows='4' REQUIRED></textarea>
-	  
-	</div>
-	<div class="col-md-12 form-group text-right">
-	  <button type="submit" class="btn btn-default">Submit</button>
-	</div>
-      </form>
-    </div>
-    <div id='comment-sending' class='alert alert-info hidden'>
-      Sending comment; please wait.
-    </div>
-    <div id='comment-success' class='alert alert-success hidden'>
-      Thanks. Your comment was successfully submitted.
-      It will appear here shortly if it isn't spam.
-    </div>
-  
-
-  </div>
-
-    </div>
-    <div class='col-md-3' id='col-right'>
-      
-  <div data-affix-after='#create'>
-    
-    
-	
-	
-	  <nav class='nav hidden-xs hidden-sm'>
-	    
-	    <div id='toc' class='collapse in'>
-	      <div class="toc">
+<nav class="actions">
 <ul>
-<li><a href="#make-your-shared-dropbox-folder-have-a-separate-repository">Make your shared Dropbox folder have a separate repository</a></li>
-<li><a href="#working-on-a-local-copy">Working on a local copy.</a><ul>
-<li><a href="#setting-up-the-repositories">Setting up the repositories</a></li>
-<li><a href="#committing-changes">Committing changes</a></li>
-<li><a href="#when-you-and-your-co-author-simultaneously-made-changes">When you and your co-author simultaneously made changes</a></li>
+
+<li><a href="https://wiki.math.cmu.edu/iki/2014-372/ikiwiki.cgi?page=model-pdes%2F10-transport&amp;do=edit" rel="nofollow">Edit</a></li>
+
+
+<li><a href="../recentchanges.html">RecentChanges</a></li>
+
+
+<li><a href="http://wiki.math.cmu.edu/gitweb-pub/?p=2014-372-wiki.git;a=history;f=model-pdes/10-transport.mdwn;hb=HEAD">History</a></li>
+
+
+
+<li><a href="https://wiki.math.cmu.edu/iki/2014-372/ikiwiki.cgi?do=prefs">Preferences</a></li>
+
+
+
+
+<li><span class="createlink"><a href="https://wiki.math.cmu.edu/iki/2014-372/ikiwiki.cgi?page=Discussion&amp;from=model-pdes%2F10-transport&amp;do=create" rel="nofollow">?</a>Discussion</span></li>
+
+
 </ul>
-</li>
-<li><a href="#creating-branches-for-a-co-author">Creating branches for a co-author</a></li>
-</ul>
+</nav>
+
+
+
+
+
+
+<div class="trails">
+<div class="trail">
+
+<span class="trailup">
+<a href="../model-pdes.html">A Few Model PDE's</a>
+</span>
+
+<span class="trailnext">
+<span class="trailsep">|</span>
+<a href="./20-heat.html">Heat Equation</a>
+<span class="trailarrow">→</span>
+</span>
+
+</div>
 </div>
 
-	    </div>
-	  </nav>
-	
-	
-  
-  
 
 
-  <br />
-  <h4><span class='glyphicon glyphicon-bullhorn' aria-hidden='true'></span>&emsp;Recent posts</h4>
-  
-  <ol class='list-unstyled'>
-    <li class='hide-xoverflow'>
-	<a href='http://www.math.cmu.edu/~gautam/sj/blog/20160406-dropbox-git.html'>Using git and Dropbox</a>
-	(2016-04-06)
-      </li>
-    <li class='hide-xoverflow'>
-	<a href='http://www.math.cmu.edu/~gautam/sj/blog/20150807-box-webdav.html'>Using Box.com cloud storage on Linux</a>
-	(2015-08-07)
-      </li>
-    <li class='hide-xoverflow'>
-	<a href='http://www.math.cmu.edu/~gautam/sj/blog/20150324-bibtex-reverse.html'>Reverse chronological sorting with BibTeX</a>
-	(2015-03-24)
-      </li>
-    <li class='hide-xoverflow'>
-	<a href='http://www.math.cmu.edu/~gautam/sj/blog/20140914-utf8.html'>Using UTF-8 in mrxvt, even though mrxvt doesn't support it</a>
-	(2014-09-14)
-      </li>
-    <li class='hide-xoverflow'>
-	<a href='http://www.math.cmu.edu/~gautam/sj/blog/20140810-android-ftp.html'>Transfering files to Android Devices in Linux</a>
-	(2014-08-10)
-      </li>
-    
-  </ol>
-  
 
-      
-    
-  </div>
+</section>
 
-    </div>
-  </div>
+
+
+
+
+<div id="pagebody">
+
+<section id="content">
+<h2 id="onedimensionalversion">One dimensional version</h2>
+
+<p><strong>Problem</strong>
+Consider a long <em>thin</em> water pipe.
+Say $\rho(x, t)$ represents the concentration of a solute at point $x$ and time $t$.
+Suppose the ambient solution is moving with velocity $v$ (which could depend on $x$ and $t$).
+Given $v$, how does $\rho$ evolve with time (ignoring diffusion, which we will address later).</p>
+
+<p>Let $A$ be the cross section area, and fix $x_1 &lt; x_2$.
+Let $c$ be the the amount of solute between $x_1$ and $x_2$.
+Note $c = A \int_{x_1}^{x_2} \rho(x,t) \, dx$.
+Since the solute only enters and leaves through the end points, we must have
+$$
+  A \int_{x_1}^{x_2} \delt \rho \, dx
+  = \frac{dc}{dt} = - A [v(x_2, t) \rho(x_2, t) - v(x_1,t) \rho(x_1, t) ]
+$$
+which leads to the PDE
+$$
+  \delt \rho + \delx (v \rho) = 0
+$$</p>
+
+<h2 id="higherdimensionalversion">Higher dimensional version</h2>
+
+<p>The only extra tool needed is the <em>Divergence Theorem.</em></p>
+
+<p><strong>Theorem</strong> <em>(Divergence Theorem).</em>
+If $D\subset \R^3$ is a bounded domain with nice (piecewise $C^1$) boundary, and $\rho:D \to \R^3$ is a nice (i.e. $C^1$) vector field on $D$, then
+$$
+  \int_D \dv \rho \, dV = \int_{\del D} \rho \cdot \boldsymbol{n} \, dS.
+$$
+where $\del D$ denotes the boundary of $D$ and $\n$ the outward pointing unit normal vector on $\del D$.
+(Note: The left hand side is a <strong>volume integral</strong>, often written as $\iiint_D$, and the right hand side is a <strong>surface integral</strong>, often written as $\iint_{\del D}$.)</p>
+
+<p>Now let $\rho$ (a scalar) be the concentration of a solute in a body of water with ambient velocity $v$ (a vector).
+Let $R \subset D$ be any region, and $c$ be the amount of the solute in the region $R$.
+Then
+$$
+  \int_R \delt \rho \, dV
+    = \frac{d}{dt} \int_R \rho \, dV
+    = \frac{dc}{dt}
+    = -\int_{\del R} \rho v \cdot \n \, dS
+    = -\int_R \dv (\rho v) \, dV.
+$$
+(Note the $-$ sign on the right!)</p>
+
+<p>Since this is true for all regions $R$, we must have
+\begin{equation}\label{eqnTransport}
+  \delt \rho + \dv (\rho v) = 0
+\end{equation}
+(Remember $v$ is a vector and $\rho$ is a scalar.)
+This is the transport equation.</p>
+
+<h2 id="specialcase:constantvelocity">Special Case: Constant Velocity</h2>
+
+<p>Consider now the special case where the velocity $v$ is constant in both space and time.
+In this case we use $c$ to denote the velocity field, and the transport equation \eqref{eqnTransport} reduces to
+$$
+  \delt \rho + c \cdot \grad \rho  = 0.
+$$
+By the method of characteristics the general solution of this is of the form
+$$
+  \rho(x, t) = f( x - c t).
+$$
+Drawing a picture we quickly see that the initial density distribution preserves shape and is "transported" with velocity $c$.</p>
+
+</section>
+
+
+
+
+
+
+
 </div>
 
-    <footer>
-    <div class='container'>
-      <hr>
-      <div class='media'>
-	<div class='media-body'>
-	  <p>
-	    <span class='text-nowrap'>&copy; Gautam Iyer 2015.</span>
-	    This site is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons <span class='hidden-xs'>Attribution-NonCommercial-ShareAlike 4.0 International</span> License</a>.
-	  </p>
-	</div>
-	<div class='media-right'>
-	  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-	    <img alt="Creative Commons License" class='media-object' style="border-width:0" src="/~gautam/sj/share/licence/cc-by-nc-sa-88x31.png">
-	  </a>
-	</div>
-      </div>
+<footer id="footer" class="pagefooter">
 
-      <span class='text-nowrap' title='Email'>
-    <span class='glyphicon glyphicon-envelope' aria-hidden='true'></span>
-    gautam@math.cmu.edu.
-  </span>
-      &emsp;
-      <span class='text-nowrap' title='Office'><span class='glyphicon glyphicon-briefcase' aria-hidden='true'></span> <a title='Wean Hall' href='https://www.google.com/maps/place/Wean+Hall,+Carnegie+Mellon+University,+Pittsburgh,+PA+15213'>WEH</a> 6121.
-  </span>
-      &emsp;
-      <span class='text-nowrap' title='Phone'>
-	<span class='glyphicon glyphicon-phone-alt' aria-hidden='true'></span>
-	412 268 8419.
-      </span>
-    </div>
-  </footer>
+<nav id="pageinfo">
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-      </script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-      </script>
 
-      <script src='/~gautam/sj/share/js/local.js'></script>
-  </body>
+<div class="trails">
+<div class="trail">
+
+<span class="trailup">
+<a href="../model-pdes.html">A Few Model PDE's</a>
+</span>
+
+<span class="trailnext">
+<span class="trailsep">|</span>
+<a href="./20-heat.html">Heat Equation</a>
+<span class="trailarrow">→</span>
+</span>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="pagelicense">
+<a name="pagelicense"></a>
+License: This page is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>. <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" align="right" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a>
+</div>
+
+
+<div class="pagedate">
+Last edited <time datetime="2014-01-20T22:12:26Z">Mon Jan 20 17:12:26 2014</time>
+<!-- Created <time datetime="2014-01-20T22:12:26Z" pubdate="pubdate">Mon Jan 20 17:12:26 2014</time> -->
+</div>
+
+</nav>
+
+
+<!-- from Undergrad PDE Lecture Notes (2014) -->
+</footer>
+
+</article>
+
+</body>
 </html>
